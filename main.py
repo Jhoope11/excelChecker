@@ -8,3 +8,12 @@ sheet
 
 
 sheet.title
+
+
+sheet["A1"]
+
+
+sheet["A1"].value
+
+
+sheet["F10"].value
