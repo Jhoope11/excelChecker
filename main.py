@@ -1,9 +1,9 @@
-from openpyxl import Workbook
+from openpyxl import load_workbook
+workbook = load_workbook(filename="sample.xlsx")
+workbook.sheetnames
+['Sheet 1']
 
-workbook = Workbook()
 sheet = workbook.active
-
-sheet["A1"] = "hello"
-sheet["B1"] = "world!"
-
-workbook.save(filename="hello_world.xlsx")
+sheet 
+sheet.title
+'Sheet 1'
