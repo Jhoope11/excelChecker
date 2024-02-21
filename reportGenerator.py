@@ -156,7 +156,7 @@ csvFiles = [f"{yesterdayDate}-scan_ssh-kent_state_university-asn.csv",    #0    
             f"{yesterdayDate}-scan_smtp-kent_state_university-asn.csv",   #1    #smtp report-   done
             f"{yesterdayDate}-scan_ssl-kent_state_university-asn.csv",    #2    #ssl report -   done
             f"{yesterdayDate}-scan_http-kent_state_university-asn.csv",   #3    #http report-   done
-            f"{yesterdayDate}-device_id-kent_state_university-asn.csv"]   #4    #devID report-  not started
+            f"{yesterdayDate}-device_id-kent_state_university-asn.csv"]   #4    #devID report-  done
 outputFile = f"{yesterdayDate}-output.xlsx"
 genReports(csvFiles, outputFile)
 
