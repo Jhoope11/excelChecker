@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import os
 
 
-allowed_ranges = [
+allowedHttp = [
     '131.123.92.', '131.123.93.','131.123.94.','131.123.95.'
     '131.123.212.', '131.123.213.', '131.123.214.', '131.123.215.',
     '131.123.246.', '131.123.247.'
@@ -22,12 +22,15 @@ allowedssl = [
 allowedDevices = [
     'BIG-IP', 'GlobalProtect'
 ]
+allowedReasons = [
+    'OK', 'Found'
+]
 
 
 def sshScan(csvFile):
     sshdf = pd.read_csv(csvFile)
     colName = 'hostname'
-    print(sshdf)
+    #print(sshdf)
     sshdf.columns = sshdf.columns.str.strip()
     sshReport = sshdf[sshdf[colName].apply(lambda x: not is_ssh_allowed(str(x).strip()))]
     return sshReport
@@ -35,16 +38,16 @@ def sshScan(csvFile):
 def smtpScan(csvFile):
     smtpdf = pd.read_csv(csvFile)
     colName = 'hostname'
-    print(smtpdf)
+    #print(smtpdf)
     smtpdf.columns = smtpdf.columns.str.strip()
     smtpReport = smtpdf[smtpdf[colName].apply(lambda x: not is_smtp_allowed(str(x).strip()))]
     return smtpReport
 
 def sslScan(csvFile):
-    print(csvFile)
+    #print(csvFile)
     ssldf = pd.read_csv(csvFile)
     colName = 'handshake'
-    print(ssldf)
+    #print(ssldf)
     ssldf.columns = ssldf.columns.str.strip()
     sslReport = ssldf[ssldf[colName].apply(lambda x: not is_ssl_allowed(str(x).strip()))]
     return sslReport
@@ -52,25 +55,34 @@ def sslScan(csvFile):
 def httpScan(csvFile):
     httpdf = pd.read_csv(csvFile)
     colName = 'ip'
-    print(httpdf)
+    colSecName = 'http_reason'
+    #print(httpdf)
     httpdf.columns = httpdf.columns.str.strip()
-    httpReport = httpdf[httpdf[colName].apply(lambda x: not is_ip_allowed(x.strip()))]
+    httpReport = httpdf[httpdf[colName].apply(lambda x: not is_http_allowed(x.strip()))]
+    httpReport = httpReport[httpReport[colSecName].apply(lambda x: not is_reason_allowed(x.strip()))]
+    print(httpReport)
     return httpReport
 
 def dIDScan(csvFile):
     dIDdf = pd.read_csv(csvFile)
     colName = 'device_model'
-    print(dIDdf)
+    #print(dIDdf)
     dIDdf.columns = dIDdf.columns.str.strip()
     dIDReport = dIDdf[dIDdf[colName].apply(lambda x: not is_dID_allowed(str(x).strip()))]
     return dIDReport
     
 
-def is_ip_allowed(ip):
-        for ip_range in allowed_ranges:
+def is_http_allowed(ip):
+        for ip_range in allowedHttp:
             if ip.startswith(ip_range):
                 return True
         return False
+
+def is_reason_allowed(reason):
+        for reasons in allowedReasons:
+            if reason.startswith(reasons):
+                return False
+        return True
 
 def is_ssh_allowed(domain):
     domain = str(domain)
